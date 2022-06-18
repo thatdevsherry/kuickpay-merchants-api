@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  kuickpay_db:
+    image: postgres:14.2
+    volumes:
+      - kuickpay_db:/var/lib/postgresql/data
+    networks:
+      - kuickpay_network
+    environment:
+      - POSTGRES_DB=${KUICKPAY_DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    ports:
+      - '5432:5432'
+  kuickpay_service:
+    build:
+      context: .
+      dockerfile: dockerfiles/kuickpay.development.dockerfile
+    volumes:
+      - .:/usr/src/app
+    networks:
+      - kuickpay_network
+    ports:
+      - '3000:3000'
+    environment:
+      - KUICKPAY_API_PORT
+      - DB_HOST
+      - DB_NAME
+      - DB_PASSWORD
+      - DB_USER
+    depends_on:
+      - kuickpay_db
+volumes:
+  kuickpay_db:
+    driver: local
+networks:
+  kuickpay_network:
+    driver: bridge

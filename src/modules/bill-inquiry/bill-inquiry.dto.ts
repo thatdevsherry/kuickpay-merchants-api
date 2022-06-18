@@ -1,7 +1,10 @@
 import { Expose } from 'class-transformer';
 import { IsAlphanumeric, IsNumberString, MaxLength } from 'class-validator';
-import { ResponseCode } from '../../common/types';
-import { IBillInquiryResponse } from './bill-inquiry.interface';
+import { BillStatus, ResponseCode } from '../../common/types';
+import {
+  BillDetailsDelegateResponse,
+  IBillInquiryResponse,
+} from './bill-inquiry.interface';
 
 export class BillInquiryRequest {
   @Expose({ name: 'userName' })
@@ -12,7 +15,8 @@ export class BillInquiryRequest {
   @MaxLength(20)
   password: string;
 
-  @IsNumberString(18)
+  @IsNumberString()
+  @MaxLength(18)
   consumerNumber: string;
 
   @IsAlphanumeric()
@@ -24,16 +28,37 @@ export class BillInquiryRequest {
 }
 
 export class BillInquiryResponse {
+  @Expose({ name: 'Response_Code' })
   responseCode: ResponseCode;
+
+  @Expose({ name: 'Consumer_Detail' })
   consumerDetail?: string;
+
+  @Expose({ name: 'Bill_Status' })
   billStatus?: string;
-  dueDate?: Date;
+
+  @Expose({ name: 'Due_Date' })
+  dueDate?: string;
+
+  @Expose({ name: 'Amount_Within_DueDate' })
   amountWithinDueDate?: string;
+
+  @Expose({ name: 'Amount_After_DueDate' })
   amountAfterDueDate?: string;
+
+  @Expose({ name: 'Billing_Month' })
   billingMonth?: string;
+
+  @Expose({ name: 'Date_Paid' })
   datePaid?: string;
+
+  @Expose({ name: 'Amount_Paid' })
   amountPaid?: string;
+
+  @Expose({ name: 'Tran_Auth_Id' })
   transactionAuthId?: string;
+
+  @Expose({ name: 'Reserved' })
   reserved: string;
 
   constructor(response: IBillInquiryResponse) {
@@ -45,5 +70,24 @@ export class BillInquiryResponse {
       responseCode: ResponseCode.BAD_TRANSACTION,
       reserved,
     }) as IBillInquiryResponse;
+  }
+
+  static successResponse(
+    delegateResponse: BillDetailsDelegateResponse,
+    reserved: string,
+  ) {
+    return new BillInquiryResponse({
+      responseCode: ResponseCode.VALID_INQUIRY,
+      amountAfterDueDate: delegateResponse.amount,
+      amountWithinDueDate: delegateResponse.amount,
+      reserved,
+      billingMonth: delegateResponse.billingMonth,
+      consumerDetail: delegateResponse.consumerDetail,
+      billStatus: delegateResponse.isPaid ? BillStatus.PAID : BillStatus.UNPAID,
+      dueDate: delegateResponse.dueDate,
+      amountPaid: '',
+      datePaid: '',
+      transactionAuthId: '',
+    });
   }
 }

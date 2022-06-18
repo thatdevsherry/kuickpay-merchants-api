@@ -11,7 +11,7 @@ export interface IBillInquiryResponse {
   responseCode: ResponseCode;
   consumerDetail?: string;
   billStatus?: string;
-  dueDate?: Date;
+  dueDate?: string;
   amountWithinDueDate?: string;
   amountAfterDueDate?: string;
   billingMonth?: string;
@@ -19,4 +19,12 @@ export interface IBillInquiryResponse {
   amountPaid?: string;
   transactionAuthId?: string;
   reserved: string;
+}
+
+export class BillDetailsDelegateResponse {
+  dueDate: string;
+  amount: string;
+  isPaid: boolean;
+  billingMonth: string;
+  consumerDetail: string;
 }

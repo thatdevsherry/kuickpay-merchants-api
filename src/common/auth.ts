@@ -1,3 +1,6 @@
-export const hardCodedAuth = (username: string, password: string) => {
+export const isAuthenticated = (
+  username: string,
+  password: string,
+): boolean => {
   return true;
 };

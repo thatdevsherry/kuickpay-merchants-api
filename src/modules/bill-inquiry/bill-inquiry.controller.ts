@@ -1,11 +1,13 @@
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
   ForbiddenException,
   HttpCode,
   Post,
+  UseInterceptors,
 } from '@nestjs/common';
-import { hardCodedAuth } from '../../common/auth';
+import { isAuthenticated } from '../../common/auth';
 import { BillInquiryRequest, BillInquiryResponse } from './bill-inquiry.dto';
 import { BillInquiryHttpSpec } from './bill-inquiry.interface';
 import { BillInquiryService } from './bill-inquiry.service';
@@ -16,11 +18,12 @@ export class BillInquiryController implements BillInquiryHttpSpec {
 
   @Post()
   @HttpCode(200)
+  @UseInterceptors(ClassSerializerInterceptor)
   billInquiryRequest(
     @Body() billInquiryRequest: BillInquiryRequest,
   ): BillInquiryResponse {
     if (
-      !hardCodedAuth(billInquiryRequest.username, billInquiryRequest.password)
+      !isAuthenticated(billInquiryRequest.username, billInquiryRequest.password)
     ) {
       throw new ForbiddenException();
     }

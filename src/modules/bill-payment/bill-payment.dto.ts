@@ -38,7 +38,11 @@ export class BillPaymentRequest {
 }
 
 export class BillPaymentResponse {
+  @Expose({ name: 'Response_Code' })
   responseCode: ResponseCode;
+
+  @Expose({ name: 'Identification Parameter' })
   identificationParameter: string;
+
   reserved: string;
 }

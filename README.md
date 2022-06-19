@@ -1,6 +1,6 @@
 # Kuickpay Merchants API
 
-A NestJS app that sets up a service to work with kuickpay.
+A NestJS app that sets up a service to work with [kuickpay](https://kuickpay.com/).
 
 I'm using this as a learning project, but might be good for production :P
 

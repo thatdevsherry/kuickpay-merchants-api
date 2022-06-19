@@ -1,6 +1,7 @@
 import { Expose } from 'class-transformer';
 import { IsAlphanumeric, IsNumberString, MaxLength } from 'class-validator';
 import { ResponseCode } from '../../common/types';
+import { IBillPaymentResponse } from './bill-payment.interface';
 
 export class BillPaymentRequest {
   @Expose({ name: 'userName' })
@@ -21,13 +22,15 @@ export class BillPaymentRequest {
   @MaxLength(14)
   amount: string;
 
+  @Expose({ name: 'tranDate' })
   @IsNumberString()
   @MaxLength(8)
-  tranDate: string;
+  transactionDate: string;
 
+  @Expose({ name: 'tranTime' })
   @IsNumberString()
   @MaxLength(6)
-  tranTime: string;
+  transactionTime: string;
 
   @IsAlphanumeric()
   @MaxLength(8)
@@ -45,4 +48,16 @@ export class BillPaymentResponse {
   identificationParameter: string;
 
   reserved: string;
+
+  constructor(response: IBillPaymentResponse) {
+    Object.assign(this, response);
+  }
+
+  static successResponse(reserved: string) {
+    return new BillPaymentResponse({
+      responseCode: ResponseCode.VALID_INQUIRY,
+      identificationParameter: '0000',
+      reserved,
+    });
+  }
 }

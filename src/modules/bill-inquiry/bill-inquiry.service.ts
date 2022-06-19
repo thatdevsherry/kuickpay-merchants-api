@@ -14,10 +14,28 @@ export class BillInquiryService {
     if (!billDetails) {
       throw new InternalServerErrorException();
     }
+
+    const savedInquiry = this.saveBillInquiryToDatabase(
+      billInquiryRequest,
+      billDetails,
+    );
+
+    if (!savedInquiry) {
+      throw new InternalServerErrorException();
+    }
+
     return BillInquiryResponse.successResponse(
       billDetails,
       billInquiryRequest.reserved,
     );
+  }
+
+  // NOT IMPLEMENTED YET
+  saveBillInquiryToDatabase(
+    billInquiry: BillInquiryRequest,
+    delegateResponse: BillDetailsDelegateResponse,
+  ) {
+    return true;
   }
 
   fetchBillDetails(consumerNumber: string): BillDetailsDelegateResponse {

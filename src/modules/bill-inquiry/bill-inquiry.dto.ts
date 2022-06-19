@@ -78,13 +78,15 @@ export class BillInquiryResponse {
   ) {
     return new BillInquiryResponse({
       responseCode: ResponseCode.VALID_INQUIRY,
-      amountAfterDueDate: delegateResponse.amount,
-      amountWithinDueDate: delegateResponse.amount,
-      reserved,
+      amountAfterDueDate: delegateResponse.amountAfterDueDate
+        ? delegateResponse.amountAfterDueDate
+        : delegateResponse.amountWithinDueDate,
+      amountWithinDueDate: delegateResponse.amountWithinDueDate,
       billingMonth: delegateResponse.billingMonth,
       consumerDetail: delegateResponse.consumerDetail,
       billStatus: delegateResponse.isPaid ? BillStatus.PAID : BillStatus.UNPAID,
       dueDate: delegateResponse.dueDate,
+      reserved,
       amountPaid: '',
       datePaid: '',
       transactionAuthId: '',

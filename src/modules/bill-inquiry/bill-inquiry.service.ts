@@ -24,7 +24,8 @@ export class BillInquiryService {
     // use consumerNumber to fetch bill details from external service
     return {
       dueDate: '2022-02-2',
-      amount: '100',
+      amountWithinDueDate: '100',
+      amountAfterDueDate: '999',
       isPaid: false,
       billingMonth: '2022',
       consumerDetail: 'test User',

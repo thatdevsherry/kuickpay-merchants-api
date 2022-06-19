@@ -23,7 +23,8 @@ export interface IBillInquiryResponse {
 
 export class BillDetailsDelegateResponse {
   dueDate: string;
-  amount: string;
+  amountWithinDueDate: string;
+  amountAfterDueDate?: string;
   isPaid: boolean;
   billingMonth: string;
   consumerDetail: string;

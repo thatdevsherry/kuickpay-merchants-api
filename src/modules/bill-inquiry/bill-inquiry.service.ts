@@ -4,9 +4,7 @@ import { BillDetailsDelegateResponse } from './bill-inquiry.interface';
 
 @Injectable()
 export class BillInquiryService {
-  handleBillInquiry(
-    billInquiryRequest: BillInquiryRequest,
-  ): BillInquiryResponse {
+  async handleBillInquiry(billInquiryRequest: BillInquiryRequest) {
     const billDetails = this.fetchBillDetails(
       billInquiryRequest.consumerNumber,
     );

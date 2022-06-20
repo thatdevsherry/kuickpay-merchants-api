@@ -4,7 +4,7 @@ import { BillInquiryRequest, BillInquiryResponse } from './bill-inquiry.dto';
 export interface BillInquiryHttpSpec {
   billInquiryRequest(
     billInquiryRequest: BillInquiryRequest,
-  ): BillInquiryResponse;
+  ): Promise<BillInquiryResponse>;
 }
 
 export interface IBillInquiryResponse {

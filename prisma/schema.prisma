@@ -1,0 +1,41 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("KUICKPAY_DB_URL")
+}
+
+model KuickpayBillInquiry {
+  id                  String             @id @default(cuid())
+  isPaid              Boolean
+  consumerNumber      String
+  consumerDetail      String
+  ueDate              DateTime
+  amountWithinDueDate Float
+  amountAfterDueDate  Float
+  billingMonth        String
+  bankMnemonic        String
+  reserved            String
+  createdAt           DateTime           @default(now())
+  updatedAt           DateTime           @updatedAt
+  KuickpayPayments    KuickpayPayments[]
+}
+
+model KuickpayPayments {
+  id                  String              @id @default(cuid())
+  consumerNumber      String
+  billInquiry         KuickpayBillInquiry @relation(fields: [billInquiryId], references: [id])
+  billInquiryId       String
+  amount              Float
+  authId              String
+  transactionDateTime DateTime
+  bankMnemonic        String
+  reserved            String
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
+}

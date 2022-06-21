@@ -11,31 +11,35 @@ datasource db {
 }
 
 model KuickpayBillInquiry {
+
   id                  String             @id @default(cuid())
-  isPaid              Boolean
-  consumerNumber      String
-  consumerDetail      String
-  ueDate              DateTime
-  amountWithinDueDate Float
-  amountAfterDueDate  Float
-  billingMonth        String
-  bankMnemonic        String
+  isPaid              Boolean            @map("is_paid")
+  consumerNumber      String             @map("consumer_number")
+  consumerDetail      String             @map("consumer_detail")
+  dueDate             DateTime           @map("due_date")
+  amountWithinDueDate Float              @map("amount_within_due_date")
+  amountAfterDueDate  Float              @map("amount_after_due_date")
+  billingMonth        String             @map("billing_month")
+  bankMnemonic        String             @map("bank_mnemonic")
   reserved            String
-  createdAt           DateTime           @default(now())
-  updatedAt           DateTime           @updatedAt
+  createdAt           DateTime           @default(now()) @map("created_at")
+  updatedAt           DateTime           @updatedAt @map("updated_at")
   KuickpayPayments    KuickpayPayments[]
+  @@map("bill_inquiries")
 }
 
 model KuickpayPayments {
   id                  String              @id @default(cuid())
-  consumerNumber      String
+  consumerNumber      String              @map("consumer_number")
   billInquiry         KuickpayBillInquiry @relation(fields: [billInquiryId], references: [id])
-  billInquiryId       String
+  billInquiryId       String              @map("bill_inquiry_id")
   amount              Float
-  authId              String
-  transactionDateTime DateTime
-  bankMnemonic        String
+  authId              String              @map("auth_id")
+  transactionDateTime DateTime            @map("transaction_datetime")
+  bankMnemonic        String              @map("bank_mnemonic")
   reserved            String
-  createdAt           DateTime            @default(now())
-  updatedAt           DateTime            @updatedAt
+  createdAt           DateTime            @default(now()) @map("created_at")
+  updatedAt           DateTime            @updatedAt @map("updated_at")
+
+  @@map("bill_payments")
 }

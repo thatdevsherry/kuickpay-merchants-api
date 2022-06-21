@@ -1,9 +1,12 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { PrismaService } from '../../common/prisma.service';
 import { BillInquiryRequest, BillInquiryResponse } from './bill-inquiry.dto';
 import { BillDetailsDelegateResponse } from './bill-inquiry.interface';
 
 @Injectable()
 export class BillInquiryService {
+  constructor(private prisma: PrismaService) {}
+
   async handleBillInquiry(billInquiryRequest: BillInquiryRequest) {
     const billDetails = this.fetchBillDetails(
       billInquiryRequest.consumerNumber,

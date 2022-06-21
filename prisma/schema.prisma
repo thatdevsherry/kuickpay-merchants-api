@@ -14,14 +14,14 @@ model KuickpayBillInquiry {
 
   id                  String             @id @default(cuid())
   isPaid              Boolean            @map("is_paid")
-  consumerNumber      String             @map("consumer_number")
-  consumerDetail      String             @map("consumer_detail")
+  consumerNumber      String             @map("consumer_number") @db.VarChar(18)
+  consumerDetail      String             @map("consumer_detail") @db.VarChar(30)
   dueDate             DateTime           @map("due_date")
   amountWithinDueDate Float              @map("amount_within_due_date")
   amountAfterDueDate  Float              @map("amount_after_due_date")
-  billingMonth        String             @map("billing_month")
-  bankMnemonic        String             @map("bank_mnemonic")
-  reserved            String
+  billingMonth        String             @map("billing_month") @db.VarChar(4)
+  bankMnemonic        String             @map("bank_mnemonic") @db.VarChar(8)
+  reserved            String             @db.VarChar(200)
   createdAt           DateTime           @default(now()) @map("created_at")
   updatedAt           DateTime           @updatedAt @map("updated_at")
   KuickpayPayments    KuickpayPayments[]
@@ -30,14 +30,14 @@ model KuickpayBillInquiry {
 
 model KuickpayPayments {
   id                  String              @id @default(cuid())
-  consumerNumber      String              @map("consumer_number")
+  consumerNumber      String              @map("consumer_number") @db.VarChar(18)
   billInquiry         KuickpayBillInquiry @relation(fields: [billInquiryId], references: [id])
   billInquiryId       String              @map("bill_inquiry_id")
   amount              Float
-  authId              String              @map("auth_id")
+  authId              String              @map("auth_id") @db.VarChar(6)
   transactionDateTime DateTime            @map("transaction_datetime")
-  bankMnemonic        String              @map("bank_mnemonic")
-  reserved            String
+  bankMnemonic        String              @map("bank_mnemonic") @db.VarChar(8)
+  reserved            String              @db.VarChar(200)
   createdAt           DateTime            @default(now()) @map("created_at")
   updatedAt           DateTime            @updatedAt @map("updated_at")
 
